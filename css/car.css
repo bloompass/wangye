@@ -1,0 +1,11 @@
+h2{margin: 30px;text-indent: 80px;}
+table{width:1060px;margin:20px auto;height:100px;text-align: center;color: #fff;}
+table{background: #ccc;}
+tbody{background: #b4a078}
+tfoot{background: #b4a078}
+
+tfoot tr{height: 50px;}
+tbody .img1{width: 60px;}
+tbody tr td span{display:block;width:100px;text-align:center;color:#fff;
+background:#c99739;line-height:30px;border-radius:6px;margin-left: 85px;}
+tfoot tr td span{display: block;text-align: center;}

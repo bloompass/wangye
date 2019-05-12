@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    #logon .box-r{border: 2px solid #ccc;width:378px;height:481px;margin:100px auto;}
+    h3{font-size:20px;margin-top: 20px;}
+    input{display: block;width:298px;height:38px;border: 1px solid #ccc;margin: 10px auto;}
+    a.login{display:block;width:300px;height:40px;text-align: center;background: #0092D8;line-height: 40px;color: #fff;margin: 30px auto;}
+    a.register{margin-left: 40px;}
+    a.register:hover{color:#f00;}
+    a.forget{margin-left: 210px;}
+    a.forget:hover{color:#f00;}
+    .tips{margin-left: 40px;}
+    .tips{width:200px;height:110px;border:1px solid #ccc;position: absolute;left: 0;right: 0;top:450px;bottom:0;margin:0 auto;background:#cecece;display: none; }
+    .tips h2{font:700 20px/2 "";text-align: center;color: #f00;}
+    </style>
+</head>
+<body>
+    <div id="logon">
+        <form class="box-r">
+            <h3>注册账号</h3>
+            <input type="text" name="user" id="user" value="" placeholder="手机号或邮箱"/>
+            <input type="password" name="pass" id="pass" value="" placeholder="密码"/>
+            <input type="password" name="pass" id="code" value="" placeholder="请输入手机验证码"/>
+            <a href="#" class="login" id="btn">注册</a>
+            
+            <span class="line">
+                <a href="register.html" class="register">注册</a>
+                <a href="#" class="forget">忘记密码？</a>
+            </span>
+        </form>
+    </div>
+    <div class="tips">
+        <h2>提示信息</h2>
+        <p id="p"></p>
+    </div>
+</body>
+<script>
+class Register{
+        constructor(){
+            this.user = document.getElementById("user");
+            this.pass = document.getElementById("pass");
+            this.code = document.getElementById("code");
+            this.btn = document.getElementById("btn");
+            this.ti = document.querySelector(".tips");
+            this.op = document.getElementById("p");
+
+            this.init();
+            this.getData();
+        }
+        init(){
+            var that = this;
+            this.btn.onclick = function(){
+                that.setData()
+            }
+        }
+        getData(){
+            this.data = localStorage.getItem("data");
+            // 读取localStorage，如果有就解析成数组，如果没有就给一个空数组，方便操作
+            if(this.data == null){
+                this.data = [];
+            }else{
+                this.data = JSON.parse(this.data)
+            }
+        }
+        setData(){
+            if(this.data.length == 0){
+                // 第一次注册
+                this.data.push({
+                    user:this.user.value,
+                    pass:this.pass.value,
+                    code:this.code.value,
+                    onoff:0
+                })
+                location.href = "login.html";
+                localStorage.setItem("data",JSON.stringify(this.data))
+            }else{
+                // 不是第一次注册，如果不是第一次注册，需要判断这次注册的和之前注册的是否重名，如果重名，不执行
+                for(var i=0;i<this.data.length;i++){
+                    if(this.data[i].user === this.user.value){
+                        this.ti.style.display = "block";
+                        this.op.innerHTML = "重名了";
+                        setTimeout(()=>{
+                            this.ti.style.display="none";
+                        },3000);    
+                        return;
+                    }
+                }
+                // 如果执行了，表示没重名，那就再增加一个
+                this.data.push({
+                    user:this.user.value,
+                    pass:this.pass.value,
+                    code:this.code.value,
+                    onoff:0
+                })
+                location.href = "login.html";
+                localStorage.setItem("data",JSON.stringify(this.data))
+            }
+        }
+    }
+
+    new Register;
+</script>
+</html>
